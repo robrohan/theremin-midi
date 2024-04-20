@@ -1,0 +1,8 @@
+numpy
+pandas
+seaborn
+tensorflow==2.13.1
+pyfluidsynth
+pretty_midi
+
+matplotlib

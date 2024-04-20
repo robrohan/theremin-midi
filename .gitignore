@@ -1,0 +1,10 @@
+.DS_Store
+*~
+
+.mypy_cache
+
+data
+training_checkpoints
+
+output/*.mid
+output/*.midi
