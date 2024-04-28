@@ -1,6 +1,6 @@
 .DS_Store
 *~
-
+__pycache__
 .mypy_cache
 
 data
@@ -8,3 +8,5 @@ training_checkpoints
 
 output/*.mid
 output/*.midi
+loss.png
+test.mid

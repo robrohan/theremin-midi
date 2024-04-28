@@ -39,7 +39,7 @@ def create_training_dataset(filenames, start=0, num_files=128):
 
 def train(filenames, seq_length=25, vocab_size=128):
 
-    notes_ds, notes_n = create_training_dataset(filenames)
+    notes_ds, notes_n = create_training_dataset(filenames, num_files=len(filenames))
     seq_ds = m.create_sequences(notes_ds, seq_length, vocab_size)
     # seq_ds.element_spec
 
@@ -171,7 +171,7 @@ def main():
     # data_dir = pathlib.Path('data/robbie-v1.0.0')
     # filenames = glob.glob(str(data_dir/'lmd_full/**/*.mid*'))
     print('Number of files:', len(filenames))
-    train(filenames)
+    train(filenames, seq_length=25)
 
     ###############
 

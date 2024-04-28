@@ -126,7 +126,6 @@ def notes_to_midi(
     return pm
 
 
-
 def create_sequences(
     dataset: tf.data.Dataset,
     seq_length: int,
