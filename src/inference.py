@@ -1,4 +1,3 @@
-import sys
 import logging
 import pretty_midi
 import tensorflow as tf
@@ -30,7 +29,7 @@ def main():
     with open('./output/model.mdl', 'r') as f:
         model_architecture = f.read()
     model = keras.models.model_from_json(model_architecture)
-    model.load_weights('./training_checkpoints/ckpt_4')
+    model.load_weights('./training_checkpoints/ckpt_1')
 
     # model = m.create_model()
     # model.load_weights('./training_checkpoints/ckpt_9')

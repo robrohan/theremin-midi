@@ -86,7 +86,7 @@ def train(filenames, seq_length=25, vocab_size=128):
             verbose=1,
             restore_best_weights=True),
     ]
-    epochs = 50
+    epochs = 10
     history = model.fit(
         train_ds,
         epochs=epochs,
@@ -116,85 +116,12 @@ def train(filenames, seq_length=25, vocab_size=128):
 
 # Defining main function
 def main():
-    # data_dir = pathlib.Path('data/maestro-v2.0.0')
-    # data_dir = pathlib.Path('data/robbie-v1.0.0')
-    # download_dataset(data_dir)
-
-    # filenames = glob.glob(str(data_dir/'lmd_full/**/*.mid*'))
-    # print('Number of files:', len(filenames))
-
-    # sample_file = filenames[0]
-    # print(sample_file)
-
-    # pm = pretty_midi.PrettyMIDI(sample_file)
-    # print(pm)
-
-    # # print(display_audio(pm))
-
-    # # Just grab one instrument - should probably pick just one
-    # # drums might be good ?
-    # print('Number of instruments:', len(pm.instruments))
-    # instrument = pm.instruments[0]
-    # instrument_name = pretty_midi.program_to_instrument_name(instrument.program)
-    # print('Instrument name:', instrument_name)
-
-    # # Extract Notes
-    # for i, note in enumerate(instrument.notes[:10]):
-    #     note_name = pretty_midi.note_number_to_name(note.pitch)
-    #     duration = note.end - note.start
-    #     print(f'{i}: pitch={note.pitch}, note_name={note_name},' f' duration={duration:.4f}')
-
-    # raw_notes = midi_to_notes(sample_file)
-    # # raw_notes.head()
-    # print(raw_notes)
-
-    # get_note_names = np.vectorize(pretty_midi.note_number_to_name)
-    # sample_note_names = get_note_names(raw_notes['pitch'])
-    # print(sample_note_names[:10])
-
-    # plot_piano_roll(raw_notes, count=100)
-    # plot_piano_roll(raw_notes)
-
-    # plot_distributions(raw_notes)
-
-    # example_file = './output/example.mid'
-    # example_pm = notes_to_midi(
-    #     raw_notes,
-    #     out_file=example_file,
-    #     instrument_name=instrument_name)
-    # display_audio(example_pm)
-
-    ###############
-
     data_dir = pathlib.Path('data/maestro-v2.0.0')
     filenames = glob.glob(str(data_dir/'**/*.mid*'))
     # data_dir = pathlib.Path('data/robbie-v1.0.0')
     # filenames = glob.glob(str(data_dir/'lmd_full/**/*.mid*'))
     print('Number of files:', len(filenames))
     train(filenames, seq_length=25)
-
-    ###############
-
-    # prompt_file = "prompt.mid"
-    # raw_notes = midi_to_notes(prompt_file)
-    # pm = pretty_midi.PrettyMIDI(prompt_file)
-    # instrument = pm.instruments[0]
-    # instrument_name = pretty_midi.program_to_instrument_name(instrument.program)
-    # print('Instrument name:', instrument_name)
-
-    # model = create_model()
-    # model.load_weights('./training_checkpoints/ckpt_9')
-    # print(model)
-    # generated_notes = generate_notes(raw_notes, model=model, temperature=2.0)
-
-    # # plot_piano_roll(generated_notes)
-    # # plot_distributions(generated_notes)
-
-    # out_file = './output/output.mid'
-    # out_pm = notes_to_midi(
-    #     generated_notes,
-    #     out_file=out_file,
-    #     instrument_name=instrument_name)
 
 
 if __name__ == "__main__":

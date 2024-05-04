@@ -29,15 +29,15 @@ def display_audio(pm: pretty_midi.PrettyMIDI, seconds=30):
     return waveform_short
 
 
-def download_dataset(data_dir):
-    if not data_dir.exists():
-        tf.keras.utils.get_file(
-            'maestro-v2.0.0-midi.zip',
-            origin='https://storage.googleapis.com/magentadata/datasets/maestro/v2.0.0/maestro-v2.0.0-midi.zip',
-            extract=True,
-            cache_dir='.',
-            cache_subdir='data',
-        )
+# def download_dataset(data_dir):
+#     if not data_dir.exists():
+#         tf.keras.utils.get_file(
+#             'maestro-v2.0.0-midi.zip',
+#             origin='https://storage.googleapis.com/magentadata/datasets/maestro/v2.0.0/maestro-v2.0.0-midi.zip',
+#             extract=True,
+#             cache_dir='.',
+#             cache_subdir='data',
+#         )
 
 
 def midi_to_notes(midi_file: str, instrument_index=0) -> pd.DataFrame:
@@ -70,7 +70,7 @@ def plot_piano_roll(notes: pd.DataFrame, count: Optional[int] = None):
     if count:
         title = f'First {count} notes'
     else:
-        title = f'Whole track'
+        title = 'Whole track'
         count = len(notes['pitch'])
     plt.figure(figsize=(20, 4))
     plot_pitch = np.stack([notes['pitch'], notes['pitch']], axis=0)
@@ -159,9 +159,6 @@ def create_sequences(
     return sequences.map(split_labels, num_parallel_calls=tf.data.AUTOTUNE)
 
 
-####################################################
-
-
 # def mse_with_positive_pressure(y_true: tf.Tensor, y_pred: tf.Tensor):
 #     mse = (y_true - y_pred) ** 2
 #     positive_pressure = 10 * tf.maximum(-y_pred, 0.0)
@@ -185,7 +182,7 @@ def create_model(seq_length=25):
 
     loss = {
         'pitch': keras.losses.SparseCategoricalCrossentropy(from_logits=True),
-        'step': keras.losses.MeanSquaredError(),  # mse_with_positive_pressure,
+        'step': keras.losses.MeanSquaredError(),                 # mse_with_positive_pressure,
         'duration': keras.losses.MeanSquaredLogarithmicError(),  # mse_with_positive_pressure,
     }
     optimizer = tf.keras.optimizers.Adam(learning_rate=learning_rate)
@@ -217,15 +214,10 @@ def create_model(seq_length=25):
     return model
 
 
-
-
-####################################################
-
-
 def predict_next_note(
-    notes: np.ndarray,
-    model: tf.keras.Model,
-    temperature: float = 1.0) -> Tuple[int, float, float]:
+        notes: np.ndarray,
+        model: tf.keras.Model,
+        temperature: float = 1.0) -> Tuple[int, float, float]:
 
     """Generates a note as a tuple of (pitch, step, duration),
         using a trained sequence model."""
