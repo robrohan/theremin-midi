@@ -2,6 +2,7 @@
 clean:
 	rm -rf ./training_checkpoints
 	rm -f ./output/*.mid
+	rm -f ./output/model.mdl
 
 install:
 	sudo apt install fluidsynth

@@ -80,6 +80,7 @@ def plot_piano_roll(notes: pd.DataFrame, count: Optional[int] = None):
     plt.xlabel('Time [s]')
     plt.ylabel('Pitch')
     _ = plt.title(title)
+    plt.savefig('output/piano_roll.png')
 
 
 def plot_distributions(notes: pd.DataFrame, drop_percentile=2.5):
@@ -94,6 +95,7 @@ def plot_distributions(notes: pd.DataFrame, drop_percentile=2.5):
     plt.subplot(1, 3, 3)
     max_duration = np.percentile(notes['duration'], 100 - drop_percentile)
     sns.histplot(notes, x="duration", bins=np.linspace(0, max_duration, 21))
+    plt.savefig('output/distributions.png')
 
 
 def notes_to_midi(

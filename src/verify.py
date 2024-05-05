@@ -26,21 +26,22 @@ def main():
 
     midi = pm.PrettyMIDI(str(sys.argv[1]))
 
-    inst_program = pm.instrument_name_to_program('Acoustic Grand Piano')
+    inst_program = pm.instrument_name_to_program('Electric Guitar (jazz)')
     new_inst = pm.Instrument(program=inst_program)
 
     # check all instruments, remove them if not the instrument we want
-    drum_instruments_index = [i for i, inst in enumerate(midi.instruments) if not inst.is_drum]
+    # instruments_index = [i for i, inst in enumerate(midi.instruments) if not inst.is_drum]
+    instruments_index = [i for i, inst in enumerate(midi.instruments) if new_inst]
 
     # remove all non drums, from the sorted such that no conflicting indexes
-    for i in sorted(drum_instruments_index, reverse=True):
+    for i in sorted(instruments_index, reverse=True):
         del midi.instruments[i]
 
     # combine all tracks into one
-    for instrument in midi.instruments:
-        if instrument.is_drum:
-            for note in instrument.notes:
-                new_inst.notes.append(note)
+    # for instrument in midi.instruments:
+    #     if instrument.is_drum:
+    #         for note in instrument.notes:
+    #             new_inst.notes.append(note)
 
     print(new_inst)
 

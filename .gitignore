@@ -8,5 +8,7 @@ training_checkpoints
 
 output/*.mid
 output/*.midi
-loss.png
+output/loss.png
+output/distributions.png
+output/piano_roll.png
 test.mid
