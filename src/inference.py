@@ -46,10 +46,10 @@ def main():
     with open('./output/model.mdl', 'r') as f:
         model_architecture = f.read()
     model = keras.models.model_from_json(model_architecture)
-    model.load_weights('./training_checkpoints/ckpt_10')
+    model.load_weights('./training_checkpoints/ckpt_11')
 
     generated_notes = m.generate_notes(
-        raw_notes, seq_length=128, model=model, temperature=2.0)
+        raw_notes, seq_length=64, model=model, temperature=2.0)
 
     m.plot_piano_roll(generated_notes)
     m.plot_distributions(generated_notes)
@@ -59,7 +59,8 @@ def main():
         generated_notes,
         out_file=out_file,
         instrument_name=(
-            instrument_name if instrument_name is not None else "SynthDrum"
+            'Acoustic Grand Piano'
+            # instrument_name if instrument_name is not None else "SynthDrum"
         ))
 
 

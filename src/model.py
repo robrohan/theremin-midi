@@ -86,15 +86,15 @@ def plot_piano_roll(notes: pd.DataFrame, count: Optional[int] = None):
 def plot_distributions(notes: pd.DataFrame, drop_percentile=2.5):
     plt.figure(figsize=[15, 5])
     plt.subplot(1, 3, 1)
-    sns.histplot(notes, x="pitch", bins=20)
+    # sns.histplot(notes, x="pitch", bins=20)
 
     plt.subplot(1, 3, 2)
     max_step = np.percentile(notes['step'], 100 - drop_percentile)
-    sns.histplot(notes, x="step", bins=np.linspace(0, max_step, 21))
+    # sns.histplot(notes, x="step", bins=np.linspace(0, max_step, 21))
 
     plt.subplot(1, 3, 3)
     max_duration = np.percentile(notes['duration'], 100 - drop_percentile)
-    sns.histplot(notes, x="duration", bins=np.linspace(0, max_duration, 21))
+    # sns.histplot(notes, x="duration", bins=np.linspace(0, max_duration, 21))
     plt.savefig('output/distributions.png')
 
 
@@ -167,9 +167,8 @@ def create_sequences(
 #     return tf.reduce_mean(mse + positive_pressure)
 
 
-def create_model(seq_length=25):
+def create_model(seq_length=25, learning_rate=0.01):
     input_shape = (seq_length, 3)
-    learning_rate = 0.01
 
     inputs = keras.Input(input_shape)
     lstm = layers.LSTM(128)(inputs)

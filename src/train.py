@@ -88,7 +88,7 @@ def train(filenames, seq_length=25, vocab_size=128):
             verbose=1,
             restore_best_weights=True),
     ]
-    epochs = 10
+    epochs = 20
     history = model.fit(
         train_ds,
         epochs=epochs,
@@ -125,7 +125,7 @@ def main():
     # data_dir = pathlib.Path('data/robbie-v1.0.0')
     # filenames = glob.glob(str(data_dir/'lmd_full/**/*.mid*'))
     print('Number of files:', len(filenames))
-    train(filenames, seq_length=128)
+    train(filenames, seq_length=64)
 
 
 if __name__ == "__main__":
