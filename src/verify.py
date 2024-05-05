@@ -1,7 +1,9 @@
 import sys
 import logging
+import mido
+import glob
+import pathlib
 import pretty_midi as pm
-# from mido import Message, MidiFile, MidiTrack, MetaMessage
 
 
 def configure_logger():
@@ -15,23 +17,21 @@ def configure_logger():
 
 def find_bad_files():
     try:
-        mid1 = MidiFile(str(sys.argv[1]))
+        mid1 = pm.MidiFile(str(sys.argv[1]))
     except Exception as e:
         print(str(sys.argv[1]), "\t", e)
 
 
-def main():
-    # mid = MidiFile(str(sys.argv[1]))
-    # logging.debug(sys.argv)
-
-    midi = pm.PrettyMIDI(str(sys.argv[1]))
-
-    inst_program = pm.instrument_name_to_program('Electric Guitar (jazz)')
-    new_inst = pm.Instrument(program=inst_program)
+def clean_with_pretty(file):
+    midi = pm.PrettyMIDI(file)
+    # inst_program = pm.instrument_name_to_program('Electric Bass (pick)')
+    # new_inst = pm.Instrument(program=inst_program)
 
     # check all instruments, remove them if not the instrument we want
-    # instruments_index = [i for i, inst in enumerate(midi.instruments) if not inst.is_drum]
-    instruments_index = [i for i, inst in enumerate(midi.instruments) if new_inst]
+    instruments_index = [
+        i for i, inst in enumerate(midi.instruments) if inst.is_drum
+    ]
+    # instruments_index = [i for i, inst in enumerate(midi.instruments) if new_inst]
 
     # remove all non drums, from the sorted such that no conflicting indexes
     for i in sorted(instruments_index, reverse=True):
@@ -42,10 +42,59 @@ def main():
     #     if instrument.is_drum:
     #         for note in instrument.notes:
     #             new_inst.notes.append(note)
+    # print(new_inst)
+    parts = file.split('/')
+    midi.write(f'./data/robbie-v1.0.0/clean/{parts[-1]}')
 
-    print(new_inst)
 
-    midi.write('test.mid')
+def main():
+    dir_path = sys.argv[1]
+    data_dir = pathlib.Path(dir_path)
+    filenames = glob.glob(str(data_dir/'**/*.mid*'))
+
+    for i in filenames:
+        file_path = i
+        try:
+            mid = mido.MidiFile(file_path)
+        except Exception as e:
+            print(e)
+            continue
+
+        # Get the MIDI version from the file header
+        midi_version = mid.type
+        print(f'MIDI version: {midi_version}')
+        if midi_version == 0:
+            pass
+        elif midi_version == 1:
+            clean_with_pretty(file_path)
+            pass
+        elif midi_version == 2:
+            pass
+        else:
+            print('unhandled midi version')
+
+    # # mid = MidiFile(str(sys.argv[1]))
+    # # logging.debug(sys.argv)
+
+    # midi = pm.PrettyMIDI(str(sys.argv[1]))
+    # inst_program = pm.instrument_name_to_program('Electric Guitar (jazz)')
+    # new_inst = pm.Instrument(program=inst_program)
+
+    # # check all instruments, remove them if not the instrument we want
+    # # instruments_index = [i for i, inst in enumerate(midi.instruments) if not inst.is_drum]
+    # instruments_index = [i for i, inst in enumerate(midi.instruments) if new_inst]
+
+    # # remove all non drums, from the sorted such that no conflicting indexes
+    # for i in sorted(instruments_index, reverse=True):
+    #     del midi.instruments[i]
+
+    # # combine all tracks into one
+    # # for instrument in midi.instruments:
+    # #     if instrument.is_drum:
+    # #         for note in instrument.notes:
+    # #             new_inst.notes.append(note)
+    # print(new_inst)
+    # midi.write('test.mid')
 
     # mid_new = MidiFile(type=1, ticks_per_beat=mid.ticks_per_beat)
     # track_drums = MidiTrack()

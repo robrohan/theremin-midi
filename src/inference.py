@@ -23,19 +23,19 @@ def main():
     pm = pretty_midi.PrettyMIDI(prompt_file)
 
     #############################################
-    mid = mido.MidiFile(prompt_file)
-    # Get the MIDI version from the file header
-    midi_version = mid.type
-    print(f'MIDI version: {midi_version}')
-    for track_index, track in enumerate(mid.tracks):
-        print(f'Track {track_index}')
-        # for msg in track:
-        #     print(msg)
+    # mid = mido.MidiFile(prompt_file)
+    # # Get the MIDI version from the file header
+    # midi_version = mid.type
+    # print(f'MIDI version: {midi_version}')
+    # for track_index, track in enumerate(mid.tracks):
+    #     print(f'Track {track_index}')
+    #     for msg in track:
+    #          print(msg)
     ############################################
 
     print(pm.instruments)
     raw_notes = m.midi_to_notes(prompt_file)
-    print(raw_notes)
+    # print(raw_notes)
 
     if len(pm.instruments):
         instrument = pm.instruments[0]
