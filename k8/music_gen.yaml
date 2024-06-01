@@ -1,0 +1,96 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: songomatic-train-claim
+  namespace: science
+spec:
+  storageClassName: local-storage
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 3Gi
+  selector:
+    matchLabels:
+      type: "local"
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: songomatic-train-deployment
+  namespace: science
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: songomatic-train-app
+  template:
+    metadata:
+      labels:
+        app: songomatic-train-app
+    spec:
+      # Request we be scheduled on a node with a hard disk type
+      # In my setup, this is only the control-plane node
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: has_gpu
+                operator: In
+                values:
+                  - "true"
+      volumes:
+        - name: bin
+          hostPath:
+            path: /usr/local/cuda/bin
+        - name: lib
+          hostPath:
+            path: /usr/local/cuda/lib64
+        - name: libcuda-so-1
+          hostPath:
+            path: /usr/lib/x86_64-linux-gnu/libcuda.so.1
+        - name: libcuda-so
+          hostPath:
+            path: /usr/lib/x86_64-linux-gnu/libcuda.so
+        - name: songomatic-train-storage
+          persistentVolumeClaim:
+            claimName: songomatic-train-claim
+      dnsPolicy: ClusterFirst
+      containers:
+        - name: songomatic-train-container
+          image: robrohan/...
+          env:
+            - name: MINIO_SERVER
+              value: "192.168.1.23"
+            - name: MINIO_ACCESS
+              value: "minio"
+            - name: MINIO_SECRET
+              value: "minio123"
+            - name: LD_LIBRARY_PATH
+              value: "/opt/conda/lib:/usr/local/nvidia/lib:/usr/lib/x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu"
+          # ports:
+          #   - containerPort: 8888
+          #     name: "http-server"
+          volumeMounts:
+            - mountPath: "/robbie-v1.0.0"
+              name: songomatic-train-storage
+            ## These need to wind up on the PATH env variable
+            - mountPath: /usr/local/nvidia/bin
+              name: bin
+            ## These need to wind up on the LD_LIBRARY_PATH env variable
+            - mountPath: /usr/local/nvidia/lib
+              name: lib
+            - mountPath: /usr/lib/x86_64-linux-gnu/libcuda.so.1
+              name: libcuda-so-1
+            - mountPath: /usr/lib/x86_64-linux-gnu/libcuda.so
+              name: libcuda-so
+          ### WARNING, this is only here because I am tool lazy to figure out the
+          ### right way to get the coral libs working. If not using a coral TPU, 
+          ### probably remove these.
+          securityContext:
+            privileged: true
+            allowPrivilegeEscalation: true
+---
+
