@@ -46,7 +46,7 @@ store:
 
 docker_build:
 	docker ps; \
-	docker build . -t songomatic_train
+	docker build . -t robrohan/songomatic_train
 
 docker_run:
 	docker ps; \
@@ -55,7 +55,8 @@ docker_run:
 		-e "MINIO_SERVER=$(MINIO_SERVER)" \
 		-e "MINIO_ACCESS=$(MINIO_ACCESS)" \
 		-e "MINIO_SECRET=$(MINIO_SECRET)" \
-		songomatic_train
+		robrohan/songomatic_train
 
 docker_push:
-	@docker push robrohan/songomatic_train
+	docker ps; \
+	docker push robrohan/songomatic_train
