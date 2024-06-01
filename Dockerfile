@@ -11,8 +11,9 @@ COPY ./input ./input
 COPY requirements.txt ./
 COPY train.sh ./train.sh
 
-RUN pip3 install minio
-RUN python3 -m pip install -r requirements.txt --upgrade -t .
+RUN pip install --upgrade pip
+RUN pip install minio
+RUN pip install --upgrade -r requirements.txt
 
 ENV DEBUG_LEVEL 10
 
