@@ -3,8 +3,12 @@
 __pycache__
 .mypy_cache
 
+.env
+log.log
 data
 training_checkpoints
+
+robbie-v1.0.0
 
 output/*.mid
 output/*.midi

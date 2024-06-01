@@ -1,8 +1,12 @@
 numpy
 pandas
 seaborn
+transformers
 tensorflow==2.13.1
+tensorflow_text
+tensorflow_hub
 pyfluidsynth
 pretty_midi
 mido
 matplotlib
+minio

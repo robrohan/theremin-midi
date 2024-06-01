@@ -22,20 +22,8 @@ def main():
     prompt_file = sys.argv[1]
     pm = pretty_midi.PrettyMIDI(prompt_file)
 
-    #############################################
-    # mid = mido.MidiFile(prompt_file)
-    # # Get the MIDI version from the file header
-    # midi_version = mid.type
-    # print(f'MIDI version: {midi_version}')
-    # for track_index, track in enumerate(mid.tracks):
-    #     print(f'Track {track_index}')
-    #     for msg in track:
-    #          print(msg)
-    ############################################
-
     print(pm.instruments)
     raw_notes = m.midi_to_notes(prompt_file)
-    # print(raw_notes)
 
     if len(pm.instruments):
         instrument = pm.instruments[0]
@@ -43,10 +31,10 @@ def main():
         print('Instrument name:', instrument_name)
 
     # Load the model architecture and checkpoint during inference
-    with open('./output/model.mdl', 'r') as f:
+    with open('./output/model.json', 'r') as f:
         model_architecture = f.read()
     model = keras.models.model_from_json(model_architecture)
-    model.load_weights('./training_checkpoints/ckpt_11')
+    model.load_weights('./training_checkpoints/ckpt_7')
 
     generated_notes = m.generate_notes(
         raw_notes, seq_length=64, model=model, temperature=2.0)
