@@ -52,7 +52,7 @@ def train(filenames,
           vocab_size=128):
 
     notes_ds, notes_n = create_training_dataset(
-        filenames, num_files=10_000)
+        filenames, num_files=5_000)
     seq_ds = m.create_sequences(notes_ds, seq_length, vocab_size)
     # seq_ds.element_spec
 
