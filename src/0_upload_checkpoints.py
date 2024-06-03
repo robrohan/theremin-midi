@@ -22,12 +22,17 @@ else:
     print("Bucket", bucket_name, "already exists")
 
 
-client.fput_object(
-    bucket_name, "loss.png", "./output/loss.png"
-)
-client.fput_object(
-    bucket_name, "model.json", "./output/model.json",
-)
+for filename in os.listdir("./output"):
+    print(filename)
+    client.fput_object(bucket_name, filename, f"./output/{filename}")
+
+
+# client.fput_object(
+#     bucket_name, "loss.png", "./output/loss.png"
+# )
+# client.fput_object(
+#     bucket_name, "model.json", "./output/model.json",
+# )
 
 for filename in os.listdir(source_dir):
     print(filename)

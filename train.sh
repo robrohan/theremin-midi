@@ -4,6 +4,8 @@ set -e
 
 pip3 install -r requirements.txt
 
+echo ""                              > log.log
+
 echo "fetching data..."           >> log.log
 python3 src/0_fetch_data.py         >> log.log
 

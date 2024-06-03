@@ -34,7 +34,7 @@ def main():
     with open('./output/model.json', 'r') as f:
         model_architecture = f.read()
     model = keras.models.model_from_json(model_architecture)
-    model.load_weights('./training_checkpoints/ckpt_7')
+    model.load_weights('./training_checkpoints/checkpoint')
 
     generated_notes = m.generate_notes(
         raw_notes, seq_length=64, model=model, temperature=2.0)
