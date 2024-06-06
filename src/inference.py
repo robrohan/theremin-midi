@@ -37,12 +37,12 @@ def main():
     model.load_weights('./training_checkpoints/checkpoint')
 
     generated_notes = m.generate_notes(
-        raw_notes, seq_length=64, model=model, temperature=2.0)
+        raw_notes, seq_length=25, model=model, temperature=2.0)
 
     m.plot_piano_roll(generated_notes)
     m.plot_distributions(generated_notes)
 
-    out_file = './output/output.mid'
+    out_file = './output/output.midi'
     _ = m.notes_to_midi(
         generated_notes,
         out_file=out_file,
