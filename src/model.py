@@ -49,12 +49,14 @@ def midi_to_notes(midi_file: str, instrument_index=0) -> pd.DataFrame:
             notes["end"].append(end)
             notes["step"].append(start - prev_start)
             notes["duration"].append(end - start)
+            # notes["velocity"].append(note.velocity)
             prev_start = start
     except Exception as e:
         print(f"could not load {midi_file} because {e}")
         return None
 
-    return pd.DataFrame({name: np.array(value) for name, value in notes.items()})
+    return pd.DataFrame({name: np.array(value) for name,
+                         value in notes.items()})
 
 
 def plot_piano_roll(notes: pd.DataFrame, count: Optional[int] = None):
