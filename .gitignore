@@ -8,6 +8,8 @@ log.log
 data
 training_checkpoints
 
+songomatic
+
 robbie-v1.0.0
 
 output/*.mid
