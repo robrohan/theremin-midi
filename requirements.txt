@@ -2,7 +2,7 @@ numpy
 pandas
 seaborn
 transformers
-tensorflow==2.13.1
+tensorflow
 tensorflow_text
 tensorflow_hub
 pyfluidsynth
