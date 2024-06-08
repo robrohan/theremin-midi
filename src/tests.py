@@ -6,11 +6,14 @@ import tensorflow as tf
 
 def main():
     # test_file = './input/chords_75_Bb.midi'
+    # test_file = './input/melody_75_F#.midi'
+    # test_file = './input/notes.mid'
     # test_file = './input/prompt.mid'
-    test_file = "./output/output.mid"
+    # test_file = "./output/output.mid"
+    test_file = "./input/test_long.midi"
 
     raw_notes = midi_to_notes(test_file)
-    print(raw_notes)
+    # print(raw_notes)
     notes_to_midi(
         raw_notes,
         out_file="./output/test1.midi",
@@ -19,7 +22,7 @@ def main():
     )
 
     raw_notes = encode_midi(test_file, 0, 64)
-    print(raw_notes)
+    # print(raw_notes)
     decode_midi(
         raw_notes,
         out_file="./output/test2.midi",

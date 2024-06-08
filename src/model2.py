@@ -18,32 +18,34 @@ def encode_note(note: Any, prev_start: float) -> int:
     step = start - prev_start
     velocity = note.velocity
     pitch = note.pitch
-    duration = end - start
+    duration = (end - start)
 
-    int_step = round(255 * step)
-    int_duration = round(255 * duration)
+    int_velocity = round(7 * (velocity / 127))   # 000
+    int_step = round(63 * step)                  # 00 0000
+    int_duration = round(15 * duration)          # 0000
 
-    # move the step of the note up to the high bits
-    encoded_note = int_step << 24
-    # Next high bits duration
-    encoded_note += int_duration << 16
-    # upper part of first 16 is velocity
-    encoded_note += velocity << 8
-    # lower part of first 16 is pitch
-    encoded_note += pitch
-
+    encoded_note = 0
+    encoded_note += int_velocity << 24
+    encoded_note += int_step << 16
+    encoded_note += int_duration << 10
+    # NOTE: Pitch will have to cross bytes into the upper part of the
+    # 16 at some point, but for testing...
+    encoded_note += pitch                       # XX00 0000
+    # print(f"{pitch} :: {int_velocity} :: {int_duration} :: {int_step}")
     return encoded_note
 
 
 def decode_note(encoded_note: int, prev_start: float) -> Tuple:
-    int_step = (encoded_note >> 24) & 255
-    int_duration = (encoded_note >> 16) & 255
-    velocity = (encoded_note >> 8) & 255
-    pitch = (encoded_note) & 255
+    # print(f"{encoded_note:32b}")
+    velocity = (encoded_note >> 24) & 7
+    int_step = (encoded_note >> 16) & 63
+    int_duration = (encoded_note >> 10) & 15
+    # Note: more complicated
+    pitch = (encoded_note) & 127
 
-    # print(int_step / 255, int_duration / 255, velocity, pitch)
-    f_step = (int_step / 255)*1000000/1000000
-    f_duration = (int_duration / 255)*1000000/1000000
+    f_step = (int_step / 63)*1000000/1000000
+    f_duration = (int_duration / 15)*1000000/1000000
+    velocity = round(127 / velocity)
 
     start = float(prev_start + f_step)
     end = float(start + f_duration)
@@ -56,9 +58,7 @@ def encode_midi(midi_file: str, instrument_index=0,
     try:
         pm = pretty_midi.PrettyMIDI(midi_file)
         instrument = pm.instruments[instrument_index]
-        # notes = collections.defaultdict(list)
         notes = []
-
         sorted_notes = sorted(instrument.notes, key=lambda note: note.start)
         prev_start = sorted_notes[0].start
 
