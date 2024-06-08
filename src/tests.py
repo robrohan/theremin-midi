@@ -1,6 +1,7 @@
 from model import notes_to_midi, midi_to_notes
 from model2 import encode_midi, decode_midi, create_model, get_tokenizer
 
+import numpy as np
 import tensorflow as tf
 
 
@@ -10,7 +11,8 @@ def main():
     # test_file = './input/notes.mid'
     # test_file = './input/prompt.mid'
     # test_file = "./output/output.mid"
-    test_file = "./input/test_long.midi"
+    # test_file = "./input/test_long.midi"
+    test_file = "./robbie-v1.0.0/clean/clean/0a5eefdc024a8076b0764636da85ae6f37b14cd8.midi"
 
     raw_notes = midi_to_notes(test_file)
     # print(raw_notes)
@@ -18,11 +20,25 @@ def main():
         raw_notes,
         out_file="./output/test1.midi",
         instrument_name=("Acoustic Grand Piano"),
-        velocity=90
+        velocity=90,
     )
 
-    raw_notes = encode_midi(test_file, 0, 64)
-    # print(raw_notes)
+    raw_notes = encode_midi(test_file, 0, 2048)
+
+    midi_chars = []
+    for _, row in raw_notes.iterrows():
+        try:
+            midi_char = int(row[0].astype(np.uint32))
+            byte_array = midi_char.to_bytes(4, 'big')
+            unicode_character = byte_array.decode('utf-8')
+            midi_chars.append(unicode_character)
+        except Exception as e:
+            print(e)
+            print(f"{midi_char:32b} {byte_array}")
+    midi_string = "".join(midi_chars)
+    with open('output/midi_as_text.txt', 'w') as f:
+        f.write(midi_string)
+
     decode_midi(
         raw_notes,
         out_file="./output/test2.midi",
