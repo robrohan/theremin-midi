@@ -1,3 +1,7 @@
+"""
+This file takes in a midi file removes the drums and collapses all the other
+tracks onto one track.
+"""
 import sys
 import hashlib
 import logging
@@ -95,6 +99,7 @@ def main():
             pass
         else:
             print('unhandled midi version')
+
 
 if __name__ == "__main__":
     configure_logger()
