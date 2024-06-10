@@ -1,15 +1,9 @@
 # import logging
 import pretty_midi
 import pandas as pd
-# import math
-# import tensorflow as tf
 import numpy as np
-# from tensorflow import keras
-# from tensorflow.keras import layers
 from matplotlib import pyplot as plt
 from typing import Any, Tuple
-
-# model_name = 'gpt2'
 
 
 def encode_note(note: Any, prev_start: float) -> int:
@@ -74,6 +68,11 @@ def decode_note(encoded_note: int, prev_start: float) -> Tuple:
 
 def encode_midi(midi_file: str, instrument_index=0,
                 window_size=64) -> np.array:
+    """
+    Encode a midi file into a numpy array of integers using the
+    instrument index with a max window size of window_size
+    (window size is basically the number of note on events)
+    """
     try:
         pm = pretty_midi.PrettyMIDI(midi_file)
         instrument = pm.instruments[instrument_index]
@@ -101,6 +100,10 @@ def decode_midi(
     out_file: str,
     instrument_name: str
 ) -> pretty_midi.PrettyMIDI:
+    """
+    Given an array of encoded midi integers write a new midi file using
+    the general midi instrument name as the instrument to use
+    """
 
     pm = pretty_midi.PrettyMIDI()
     instrument = pretty_midi.Instrument(
@@ -122,3 +125,26 @@ def decode_midi(
     pm.instruments.append(instrument)
     pm.write(out_file)
     return pm
+
+
+def encoded_notes_to_str(raw_notes: np.array) -> str:
+    midi_chars = []
+    for _, raw_note in enumerate(raw_notes):
+        try:
+            midi_char = int(raw_note.astype(np.uint32))
+            byte_array = midi_char.to_bytes(4, 'big')
+            unicode_character = byte_array.decode('utf-8')
+            midi_chars.append(unicode_character)
+        except Exception as e:
+            print(e)
+            # print(f"{midi_char:32b} - {byte_array}")
+
+    midi_string = "".join(midi_chars)
+    return midi_string
+
+
+def str_to_encoded_notes(string: str) -> np.array:
+    from_file = []
+    for c in string:
+        from_file.append(int.from_bytes(bytes(c, "utf-8"), 'big'))
+    return np.array(from_file)

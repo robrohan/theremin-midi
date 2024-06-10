@@ -1,10 +1,10 @@
-from midichar import encode_midi, decode_midi
 import logging
 import pathlib
 import glob
 import numpy as np
 import tensorflow as tf
 
+from midichar import encode_midi, decode_midi, encoded_notes_to_str, str_to_encoded_notes
 
 def configure_logger():
     logger = logging.getLogger()
@@ -30,19 +30,9 @@ def test_file():
     raw_notes = encode_midi(test_file, 0, seq_length)
 
     logging.info("encoding the raw notes to utf8")
-    midi_chars = []
-    for _, raw_note in enumerate(raw_notes):
-        try:
-            midi_char = int(raw_note.astype(np.uint32))
-            byte_array = midi_char.to_bytes(4, 'big')
-            unicode_character = byte_array.decode('utf-8')
-            midi_chars.append(unicode_character)
-        except Exception as e:
-            print(e)
-            print(f"{midi_char:32b} {byte_array}")
+    midi_string = encoded_notes_to_str(raw_notes)
 
     logging.info("saving to a text file as plain text")
-    midi_string = "".join(midi_chars)
     with open('output/midi_as_text.txt', 'w') as f:
         f.write(midi_string)
 
@@ -54,13 +44,11 @@ def test_file():
         string_from_file = inf.read()
 
     logging.info("converting utf8 chars back into integers")
-    from_file = []
-    for c in string_from_file:
-        from_file.append(int.from_bytes(bytes(c, "utf-8"), 'big'))
+    from_file = str_to_encoded_notes(string_from_file)
 
     logging.info("creating new midi file from text file notes")
     decode_midi(
-        np.array(from_file),
+        from_file,
         out_file="./output/test2.midi",
         instrument_name=("Acoustic Grand Piano"),
     )
