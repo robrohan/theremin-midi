@@ -1,12 +1,7 @@
-import logging
 import pathlib
 import glob
-import numpy as np
-import tensorflow as tf
 
-from midichar import encode_midi, decode_midi, encoded_notes_to_str, str_to_encoded_notes
-
-from bpe import CharDataset
+from midichar import encode_midi, encoded_notes_to_str
 
 
 def main():
