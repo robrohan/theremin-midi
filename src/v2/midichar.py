@@ -58,7 +58,7 @@ def decode_note(encoded_note: int, prev_start: float) -> Tuple:
     # encoded_note = encoded_note & (~4034955392)
 
     # print(f"{encoded_note:32b}")
-    velocity = (encoded_note >> 24) & 3
+    velocity = max( ((encoded_note >> 24) & 3), 1)
     int_step = (encoded_note >> 16) & 63
     int_duration = (encoded_note >> 9) & 15
 
@@ -73,7 +73,7 @@ def decode_note(encoded_note: int, prev_start: float) -> Tuple:
 
 
 def encode_midi(midi_file: str, instrument_index=0,
-                window_size=64) -> pd.DataFrame:
+                window_size=64) -> np.array:
     try:
         pm = pretty_midi.PrettyMIDI(midi_file)
         instrument = pm.instruments[instrument_index]
@@ -108,8 +108,7 @@ def decode_midi(
     )
 
     prev_start = 0.0
-    # for _, encoded_note in notes.iterrows():
-    for i, encoded_note in enumerate(notes):
+    for _, encoded_note in enumerate(notes):
         velocity, pitch, start, end = decode_note(encoded_note, prev_start)
         note = pretty_midi.Note(
             velocity=velocity,

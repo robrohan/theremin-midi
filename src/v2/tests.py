@@ -24,20 +24,14 @@ def test_file():
     # test_file = "./input/test_long.midi"
     test_file = "./robbie-v1.0.0/clean/clean/0a5eefdc024a8076b0764636da85ae6f37b14cd8.midi"
 
-    # raw_notes = midi_to_notes(test_file)
-    # # print(raw_notes)
-    # notes_to_midi(
-    #     raw_notes,
-    #     out_file="./output/test1.midi",
-    #     instrument_name=("Acoustic Grand Piano"),
-    #     velocity=90,
-    # )
-
     seq_length = 64
+
+    logging.info(f"encoding midi file with a length of {seq_length}")
     raw_notes = encode_midi(test_file, 0, seq_length)
 
+    logging.info("encoding the raw notes to utf8")
     midi_chars = []
-    for i, raw_note in enumerate(raw_notes):
+    for _, raw_note in enumerate(raw_notes):
         try:
             midi_char = int(raw_note.astype(np.uint32))
             byte_array = midi_char.to_bytes(4, 'big')
@@ -46,12 +40,27 @@ def test_file():
         except Exception as e:
             print(e)
             print(f"{midi_char:32b} {byte_array}")
+
+    logging.info("saving to a text file as plain text")
     midi_string = "".join(midi_chars)
     with open('output/midi_as_text.txt', 'w') as f:
         f.write(midi_string)
 
+    #########################################################
+
+    logging.info("reading plain text file back in")
+    string_from_file = ""
+    with open('output/midi_as_text.txt', 'r') as inf:
+        string_from_file = inf.read()
+
+    logging.info("converting utf8 chars back into integers")
+    from_file = []
+    for c in string_from_file:
+        from_file.append(int.from_bytes(bytes(c, "utf-8"), 'big'))
+
+    logging.info("creating new midi file from text file notes")
     decode_midi(
-        raw_notes,
+        np.array(from_file),
         out_file="./output/test2.midi",
         instrument_name=("Acoustic Grand Piano"),
     )
