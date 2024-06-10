@@ -1,8 +1,6 @@
 # import logging
 import pretty_midi
-import pandas as pd
 import numpy as np
-from matplotlib import pyplot as plt
 from typing import Any, Tuple
 
 
@@ -15,9 +13,9 @@ def encode_note(note: Any, prev_start: float) -> int:
     pitch = note.pitch
     duration = (end - start)
 
-    int_velocity = round(3 * (velocity / 100))    # 00
+    int_velocity = round(3*(round((velocity/127) * 100)/100))   # 00
     int_step = min(round(63 * step), 63)          # 00 0000
-    int_duration = min(round(15 * duration), 31)  # 0000
+    int_duration = min(round(duration / 31 * 100), 31)  # 0000
 
     encoded_note = 0
     encoded_note += int_velocity << 24
@@ -52,13 +50,13 @@ def decode_note(encoded_note: int, prev_start: float) -> Tuple:
     # encoded_note = encoded_note & (~4034955392)
 
     # print(f"{encoded_note:32b}")
-    velocity = max( ((encoded_note >> 24) & 3), 1)
+    velocity = ((encoded_note >> 24) & 3)
     int_step = (encoded_note >> 16) & 63
-    int_duration = (encoded_note >> 9) & 15
+    int_duration = (encoded_note >> 9) & 31
 
     f_step = (int_step / 63)*1000000/1000000
-    f_duration = (int_duration / 15)*1000000/1000000
-    velocity = round(100 / velocity)
+    f_duration = (int_duration / 31)*10
+    velocity = int(127 * (velocity / 10.0))
 
     start = float(prev_start + f_step)
     end = float(start + f_duration)

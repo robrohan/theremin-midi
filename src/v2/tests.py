@@ -6,6 +6,8 @@ import tensorflow as tf
 
 from midichar import encode_midi, decode_midi, encoded_notes_to_str, str_to_encoded_notes
 
+from bpe import CharDataset
+
 def configure_logger():
     logger = logging.getLogger()
     handler = logging.StreamHandler()
@@ -18,11 +20,11 @@ def configure_logger():
 def test_file():
     # test_file = './input/chords_75_Bb.midi'
     # test_file = './input/melody_75_F#.midi'
-    # test_file = './input/notes.mid'
+    test_file = './input/notes.mid'
     # test_file = './input/prompt.mid'
     # test_file = "./output/output.mid"
     # test_file = "./input/test_long.midi"
-    test_file = "./robbie-v1.0.0/clean/clean/0a5eefdc024a8076b0764636da85ae6f37b14cd8.midi"
+    # test_file = "./robbie-v1.0.0/clean/clean/0a5eefdc024a8076b0764636da85ae6f37b14cd8.midi"
 
     seq_length = 64
 
@@ -38,8 +40,16 @@ def test_file():
 
     #########################################################
 
+    # string_from_file = ""
+    # with open('output/midi_as_text.txt', 'r') as inf:
+    #     string_from_file = inf.read()
+    # block_size = 128
+    # dataset = CharDataset(string_from_file, block_size)
+    # print(dataset)
+
+    #########################################################
+
     logging.info("reading plain text file back in")
-    string_from_file = ""
     with open('output/midi_as_text.txt', 'r') as inf:
         string_from_file = inf.read()
 
@@ -55,12 +65,10 @@ def test_file():
 
 
 def main():
-    print(f"Tensorflow version: {tf.__version__}")
-
-    data_dir = pathlib.Path('robbie-v1.0.0/clean/clean')
-    filenames = glob.glob(str(data_dir/'*.mid*'))
-    print('Number of files:', len(filenames))
-
+    # print(f"Tensorflow version: {tf.__version__}")
+    # data_dir = pathlib.Path('robbie-v1.0.0/clean/clean')
+    # filenames = glob.glob(str(data_dir/'*.mid*'))
+    # print('Number of files:', len(filenames))
     test_file()
 
 
