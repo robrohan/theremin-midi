@@ -18,7 +18,7 @@ def main():
             try:
                 rn = encode_midi(filenames[i], 0, seq_length)
                 mstr = encoded_notes_to_str(rn)
-                inf.write(mstr)
+                inf.write(mstr + "\n")
             except Exception as e:
                 print(e)
             if i >= 300:
