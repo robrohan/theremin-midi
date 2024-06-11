@@ -1,6 +1,6 @@
 
 from model import GPT
-from bpe import CharDataset
+import sentencepiece as spm
 import torch
 
 model_config = GPT.get_default_config()
@@ -19,18 +19,20 @@ model.eval()
 
 input_text = "򏋊򏋈򏋊򏉍򇉍"
 
-dataset = CharDataset(input_text, 64)
-
-print(dataset.__getitem__(0))
+sp = spm.SentencePieceProcessor()
+sp.load('models/miditok.model')
+tokens = sp.encode_as_pieces(input_text)
+token_ids = sp.encode_as_ids(input_text)
 
 # # Tokenize the input text
 # inputs = tokenizer(input_text, return_tensors='pt')
 
 # # Generate text
-# with torch.no_grad():  # Disable gradient calculation for inference
-#     outputs = model.generate(inputs['input_ids'], max_length=50, num_return_sequences=1)
+with torch.no_grad():  # Disable gradient calculation for inference
+    outputs = model.generate(token_ids, 50)  # max_length=50, num_return_sequences=1)
 
 # # Decode the generated text
+print(outputs)
 # generated_text = tokenizer.decode(outputs[0], skip_special_tokens=True)
 
 # print(generated_text)

@@ -1,12 +1,14 @@
 import logging
-import pathlib
-import glob
 import numpy as np
-import tensorflow as tf
+from torch.utils.data import DataLoader
+from midichar import (
+    encode_midi,
+    decode_midi,
+    encoded_notes_to_str,
+    str_to_encoded_notes,
+)
+from bpe import CharDataset, TextDataset, collate_fn
 
-from midichar import encode_midi, decode_midi, encoded_notes_to_str, str_to_encoded_notes
-
-from bpe import CharDataset
 
 def configure_logger():
     logger = logging.getLogger()
@@ -20,7 +22,7 @@ def configure_logger():
 def test_file():
     # test_file = './input/chords_75_Bb.midi'
     # test_file = './input/melody_75_F#.midi'
-    test_file = './input/notes.mid'
+    test_file = "./input/notes.mid"
     # test_file = './input/prompt.mid'
     # test_file = "./output/output.mid"
     # test_file = "./input/test_long.midi"
@@ -35,7 +37,7 @@ def test_file():
     midi_string = encoded_notes_to_str(raw_notes)
 
     logging.info("saving to a text file as plain text")
-    with open('output/midi_as_text.txt', 'w') as f:
+    with open("output/midi_as_text.txt", "w") as f:
         f.write(midi_string)
 
     #########################################################
@@ -50,7 +52,7 @@ def test_file():
     #########################################################
 
     logging.info("reading plain text file back in")
-    with open('output/midi_as_text.txt', 'r') as inf:
+    with open("output/midi_as_text.txt", "r") as inf:
         string_from_file = inf.read()
 
     logging.info("converting utf8 chars back into integers")
@@ -62,6 +64,16 @@ def test_file():
         out_file="./output/test2.midi",
         instrument_name=("Acoustic Grand Piano"),
     )
+
+    # Example usage
+    dataset = TextDataset(
+        file_path="./output/training.txt",
+        tokenizer_path="./models/miditok.model",
+        max_length=64
+    )
+    dataloader = DataLoader(dataset, batch_size=4, shuffle=True)
+    for batch in dataloader:
+        print(batch)
 
 
 def main():
