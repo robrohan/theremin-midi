@@ -96,7 +96,7 @@ def encode_midi(midi_file: str, instrument_index=0,
 def decode_midi(
     notes: np.array,
     out_file: str,
-    instrument_name: str
+    instrument_name: str = "Acoustic Grand Piano"
 ) -> pretty_midi.PrettyMIDI:
     """
     Given an array of encoded midi integers write a new midi file using

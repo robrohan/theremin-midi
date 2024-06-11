@@ -17,3 +17,5 @@ print("Token IDs:", token_ids)
 # Detokenize the tokens back to text
 detokenized_text = sp.decode_pieces(tokens)
 print("Detokenized text:", detokenized_text)
+
+print(sp.decode_ids(token_ids))
