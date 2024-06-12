@@ -13,7 +13,7 @@ model = GPT(model_config)
 string_from_file = ""
 with open('./output/training.txt', 'r') as inf:
     string_from_file = inf.read()
-block_size = 64
+block_size = 128
 train_dataset = CharDataset(string_from_file, block_size)
 print(train_dataset)
 

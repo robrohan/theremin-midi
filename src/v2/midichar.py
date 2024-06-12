@@ -13,9 +13,11 @@ def encode_note(note: Any, prev_start: float) -> int:
     pitch = note.pitch
     duration = (end - start)
 
-    int_velocity = round(3*(round((velocity/127) * 100)/100))   # 00
-    int_step = min(round(63 * step), 63)          # 00 0000
-    int_duration = min(round(duration / 31 * 100), 31)  # 0000
+    # This is whack, 0 wont work as it's not valid utf8 so really velocity is
+    # only 1 to 3
+    int_velocity = max(min(round(3*(round((velocity/127) * 100)/100)), 3), 1)  # 00
+    int_step = min(round(63 * step), 63)                              # 00 0000
+    int_duration = min(round(duration / 31 * 100), 31)                # 0000
 
     encoded_note = 0
     encoded_note += int_velocity << 24
@@ -50,7 +52,7 @@ def decode_note(encoded_note: int, prev_start: float) -> Tuple:
     # encoded_note = encoded_note & (~4034955392)
 
     # print(f"{encoded_note:32b}")
-    velocity = ((encoded_note >> 24) & 3)
+    velocity = (encoded_note >> 24) & 3
     int_step = (encoded_note >> 16) & 63
     int_duration = (encoded_note >> 9) & 31
 

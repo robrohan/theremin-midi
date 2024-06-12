@@ -9,7 +9,7 @@ def main():
     filenames = glob.glob(str(data_dir/'*.mid*'))
     print('Number of files:', len(filenames))
 
-    seq_length = 64
+    seq_length = 128
 
     with open('./output/training.txt', 'w') as inf:
         # string_from_file = inf.read()
@@ -21,7 +21,7 @@ def main():
                 inf.write(mstr + "\n")
             except Exception as e:
                 print(e)
-            if i >= 300:
+            if i >= 900:
                 break
 
 
