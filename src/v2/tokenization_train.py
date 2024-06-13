@@ -1,10 +1,10 @@
 import sentencepiece as spm
 
-MAX_VOCAB = 14426
+MAX_VOCAB = 25428
 
 # Train a SentencePiece model
 spm.SentencePieceTrainer.train(
-    input='./output/training.txt',
+    input='./models/training.txt',
     model_prefix='./models/miditok',
     vocab_size=MAX_VOCAB,
     input_format='text',

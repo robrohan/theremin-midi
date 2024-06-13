@@ -1,7 +1,7 @@
 
 from model import GPT
 from trainer import Trainer
-from bpe import CharDataset
+from bpe import TextDataset, CharDataset
 
 model_config = GPT.get_default_config()
 model_config.model_type = 'gpt-nano'
@@ -10,22 +10,24 @@ model_config.block_size = 1024   # openai's model block_size (i.e. input
                                  # context length)
 model = GPT(model_config)
 
-string_from_file = ""
-with open('./output/training.txt', 'r') as inf:
-    string_from_file = inf.read()
-block_size = 128
-train_dataset = CharDataset(string_from_file, block_size)
+block_size = 32
+# string_from_file = ""
+# with open('./output/training.txt', 'r') as inf:
+#     string_from_file = inf.read()
+# train_dataset = CharDataset(string_from_file, block_size)
+train_dataset = TextDataset(
+    "./models/training.txt",
+    "./models/miditok.model",
+    block_size)
 print(train_dataset)
 
 # your subclass of torch.utils.data.Dataset that emits example
 # torch LongTensor of lengths up to 1024, with integers from [0,50257)
-# train_dataset = YourDataset()
-
 train_config = Trainer.get_default_config()
-train_config.learning_rate = 5e-4  # many possible options, see the file
+train_config.learning_rate = 0.003  # many possible options, see the file
 train_config.max_iters = 2000
-# train_config.batch_size = 32
-train_config.num_workers = 0
+train_config.batch_size = 64
+train_config.num_workers = 3
 trainer = Trainer(train_config, model, train_dataset)
 
 

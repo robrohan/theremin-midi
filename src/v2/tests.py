@@ -67,7 +67,7 @@ def test_file():
 
     # Example usage
     dataset = TextDataset(
-        file_path="./output/training.txt",
+        file_path="./models/training.txt",
         tokenizer_path="./models/miditok.model",
         max_length=64
     )
@@ -77,10 +77,6 @@ def test_file():
 
 
 def main():
-    # print(f"Tensorflow version: {tf.__version__}")
-    # data_dir = pathlib.Path('robbie-v1.0.0/clean/clean')
-    # filenames = glob.glob(str(data_dir/'*.mid*'))
-    # print('Number of files:', len(filenames))
     test_file()
 
 

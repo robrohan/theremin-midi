@@ -11,8 +11,7 @@ def main():
 
     seq_length = 128
 
-    with open('./output/training.txt', 'w') as inf:
-        # string_from_file = inf.read()
+    with open('./models/training.txt', 'w') as inf:
         for i in range(len(filenames)):
             print(filenames[i])
             try:
@@ -21,8 +20,8 @@ def main():
                 inf.write(mstr + "\n")
             except Exception as e:
                 print(e)
-            if i >= 900:
-                break
+            # if i >= 900:
+            #     break
 
 
 if __name__ == "__main__":

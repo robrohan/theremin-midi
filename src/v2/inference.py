@@ -6,7 +6,7 @@ import torch
 from midichar import str_to_encoded_notes, decode_midi
 
 
-def generate(prompt='', num_samples=5, steps=20, do_sample=True):
+def generate(prompt='', num_samples=5, steps=64, do_sample=True):
     sp = spm.SentencePieceProcessor()
     sp.load('models/miditok.model')
     if prompt == '':
@@ -51,6 +51,6 @@ model.load_state_dict(torch.load("./models/music_gen.pt"))
 model.eval()
 #################################
 
-input_text = "򀈫򀈰򀈳򉊫򀊰"
+input_text = "򀈫"
 
 generate(input_text)

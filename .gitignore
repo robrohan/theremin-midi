@@ -8,6 +8,11 @@ log.log
 data
 training_checkpoints
 
+models/miditok.model
+models/miditok.vocab
+models/training.txt
+models/music_gen.pt
+
 songomatic
 
 robbie-v1.0.0
