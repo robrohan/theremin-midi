@@ -8,10 +8,11 @@ log.log
 data
 training_checkpoints
 
-models/miditok.model
-models/miditok.vocab
+models/miditok_*.model
+models/miditok_*.vocab
+models/music_gen_*.pt
+
 models/training.txt
-models/music_gen.pt
 
 songomatic
 

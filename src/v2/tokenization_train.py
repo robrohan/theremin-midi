@@ -1,11 +1,14 @@
+import os
 import sentencepiece as spm
 
-MAX_VOCAB = 25428
+VERSION = os.environ["VERSION"]
+
+MAX_VOCAB = 31185
 
 # Train a SentencePiece model
 spm.SentencePieceTrainer.train(
-    input='./models/training.txt',
-    model_prefix='./models/miditok',
+    input=f'./models/training_{VERSION}.txt',
+    model_prefix=f'./models/miditok_{VERSION}',
     vocab_size=MAX_VOCAB,
     input_format='text',
     input_sentence_size=3000,

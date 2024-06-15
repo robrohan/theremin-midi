@@ -1,6 +1,6 @@
 #!/bin/sh
 
-set -e
+set -ex
 
 pip3 install -r requirements.txt
 

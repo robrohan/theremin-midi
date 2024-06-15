@@ -1,7 +1,8 @@
 FROM nvidia/cuda:11.0.3-base-ubuntu20.04
 
 RUN apt-get update \
-    && DEBIAN_FRONTEND=noninteractive TZ=Etc/UTC apt-get install -y \
+    && DEBIAN_FRONTEND=noninteractive TZ=Etc/UTC apt-get \
+        --no-install-recommends install -y \
         python3 python3-pip fluidsynth \
     && rm -rf /var/lib/apt/lists/*
 

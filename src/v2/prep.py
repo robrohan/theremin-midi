@@ -1,17 +1,23 @@
+import os
 import pathlib
 import glob
 
 from midichar import encode_midi, encoded_notes_to_str
 
 
+VERSION = os.environ["VERSION"]
+
+
 def main():
-    data_dir = pathlib.Path('robbie-v1.0.0/clean/clean')
+    data_dir = pathlib.Path('./data/robbie-v1.0.0/clean')
     filenames = glob.glob(str(data_dir/'*.mid*'))
     print('Number of files:', len(filenames))
 
-    seq_length = 128
+    # The size of the snippet of text to move from the midi data
+    # to the training data
+    seq_length = 256
 
-    with open('./models/training.txt', 'w') as inf:
+    with open(f'./models/training_{VERSION}.txt', 'w') as inf:
         for i in range(len(filenames)):
             print(filenames[i])
             try:
