@@ -3,7 +3,7 @@ from model import GPT
 import sentencepiece as spm
 import torch
 
-from midichar import str_to_encoded_notes, decode_midi
+from midichar import str_to_encoded_notes, decode_midi, encode_midi, encoded_notes_to_str
 
 
 def generate(prompt='', num_samples=5, steps=64, do_sample=True):
@@ -26,7 +26,6 @@ def generate(prompt='', num_samples=5, steps=64, do_sample=True):
     for i in range(num_samples):
         # get the data off the gpu into a list
         arr = list(y[i].detach().cpu().numpy())
-        # print("------------->", arr)
         # we need them in integers not tensor.int64s
         arr = [int(i) for i in arr]
         # if not all(isinstance(i, int) for i in arr):
@@ -34,8 +33,6 @@ def generate(prompt='', num_samples=5, steps=64, do_sample=True):
         #     print(ls)
         #     raise ValueError("Input to decode_ids must be a list of integers.")
         out = sp.decode_ids(arr, out_type=str)
-        # print('-'*80)
-        # print(out)
         # Now we should have a string encoded midi...
         raw_notes = str_to_encoded_notes(out)
         decode_midi(raw_notes, f"./output/model_{i}.midi")
@@ -47,10 +44,12 @@ model_config.model_type = 'gpt-nano'
 model_config.vocab_size = 50257
 model_config.block_size = 1024
 model = GPT(model_config)
-model.load_state_dict(torch.load("./models/music_gen.pt", map_location=torch.device('cpu')))
+model.load_state_dict(torch.load("./models/music_gen.pt", 
+                                 map_location=torch.device('cpu')))
 model.eval()
 #################################
 
-input_text = "󀈤󀈤󈈰"
+input_text = encoded_notes_to_str(encode_midi("./input/prompt.mid", 0, 16))
+# input_text = "󀈤󀈤󈈰"
 
 generate(input_text)

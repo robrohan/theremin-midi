@@ -98,7 +98,8 @@ def encode_midi(midi_file: str, instrument_index=0,
 def decode_midi(
     notes: np.array,
     out_file: str,
-    instrument_name: str = "Acoustic Grand Piano"
+    instrument_name: str = "Acoustic Grand Piano",
+    bpm: int = 120
 ) -> pretty_midi.PrettyMIDI:
     """
     Given an array of encoded midi integers write a new midi file using
@@ -110,9 +111,25 @@ def decode_midi(
         program=pretty_midi.instrument_name_to_program(instrument_name)
     )
 
+    # Add a time signature change
+    time_signature = pretty_midi.TimeSignature(numerator=4, denominator=4,
+                                               time=0)
+    pm.time_signature_changes.append(time_signature)
+
+    # Key number according to [0, 11] Major, [12, 23] minor. For example, 0
+    # is C Major, 12 is C minor - time is when to apply the change
+    key_signature = pretty_midi.KeySignature(key_number=0, time=0)
+    pm.key_signature_changes.append(key_signature)
+
+    pm._tick_scales.append((0, 60/(bpm*pm.resolution)))
+    pm._update_tick_to_time(0)
+
     prev_start = 0.0
     for _, encoded_note in enumerate(notes):
         velocity, pitch, start, end = decode_note(encoded_note, prev_start)
+        if velocity == 0:
+            velocity = 10
+        # print(velocity, pitch, start, end)
         note = pretty_midi.Note(
             velocity=velocity,
             pitch=pitch,
@@ -120,7 +137,8 @@ def decode_midi(
             end=end,
         )
         instrument.notes.append(note)
-        prev_start = start
+        prev_start += (60000 / (bpm * 192)) / 4
+        # prev_start = start
 
     pm.instruments.append(instrument)
     pm.write(out_file)
