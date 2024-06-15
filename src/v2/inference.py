@@ -47,10 +47,10 @@ model_config.model_type = 'gpt-nano'
 model_config.vocab_size = 50257
 model_config.block_size = 1024
 model = GPT(model_config)
-model.load_state_dict(torch.load("./models/music_gen.pt"))
+model.load_state_dict(torch.load("./models/music_gen.pt", map_location=torch.device('cpu')))
 model.eval()
 #################################
 
-input_text = "򀈫"
+input_text = "󀈤󀈤󈈰"
 
 generate(input_text)
