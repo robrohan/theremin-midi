@@ -22,6 +22,7 @@ metadata:
   namespace: science
 spec:
   replicas: 1
+  # backoffLimit: 0
   selector:
     matchLabels:
       app: songomatic-train-app
@@ -30,6 +31,7 @@ spec:
       labels:
         app: songomatic-train-app
     spec:
+      # restartPolicy: Never
       # Request we be scheduled on a node with a hard disk type
       # In my setup, this is only the control-plane node
       affinity:
