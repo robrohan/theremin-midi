@@ -19,6 +19,11 @@ python3 src/v2/0_fetch_data.py         >> log.log
 # echo "SP training..."                >> log.log
 # python3 src/v2/tokenization_train.py              >> log.log
 
+if [ -f "./models/$VERSION/music_gen.pt" ]; then
+    echo "Already trained!"
+    exit 1
+fi
+
 # GPT training
 echo "training..."                >> log.log
 python3 src/v2/train.py              >> log.log
