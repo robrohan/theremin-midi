@@ -4,9 +4,6 @@ numpy
 pandas
 seaborn
 transformers
-tensorflow
-tensorflow_text
-tensorflow_hub
 pyfluidsynth
 pretty_midi
 mido

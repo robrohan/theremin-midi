@@ -8,6 +8,7 @@ client = Minio(os.environ['MINIO_SERVER'],
                secure=False,)
 
 
+VERSION = os.environ['VERSION']
 bucket_name = "musicgen"
 
 # The file to upload, change this path if needed
@@ -25,7 +26,8 @@ else:
 # for filename in os.listdir("./output"):
 # print(filename)
 filename = "music_gen.pt"
-client.fput_object(bucket_name, filename, f"./{source_dir}/{filename}")
+client.fput_object(bucket_name, f"{VERSION}/{filename}",
+                   f"./{source_dir}/{filename}")
 
 # client.fput_object(
 #     bucket_name, "loss.png", "./output/loss.png"

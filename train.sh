@@ -6,6 +6,8 @@ pip3 install -r requirements.txt
 
 echo ""                              > log.log
 
+mkdir -p ./models/
+
 echo "fetching data..."           >> log.log
 python3 src/v2/0_fetch_data.py         >> log.log
 

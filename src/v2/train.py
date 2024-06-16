@@ -1,7 +1,9 @@
-
+import os
 from model import GPT
 from trainer import Trainer
-from bpe import TextDataset, CharDataset
+from bpe import TextDataset
+
+VERSION = os.environ["VERSION"]
 
 model_config = GPT.get_default_config()
 model_config.model_type = 'gpt-nano'
@@ -16,8 +18,8 @@ block_size = 32
 #     string_from_file = inf.read()
 # train_dataset = CharDataset(string_from_file, block_size)
 train_dataset = TextDataset(
-    "./models/training.txt",
-    "./models/miditok.model",
+    f"./models/{VERSION}/training.txt",
+    f"./models/{VERSION}/miditok.model",
     block_size)
 print(train_dataset)
 

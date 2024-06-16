@@ -72,6 +72,8 @@ spec:
               value: "minio123"
             - name: LD_LIBRARY_PATH
               value: "/opt/conda/lib:/usr/local/nvidia/lib:/usr/lib/x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu"
+            - name: VERSION
+              name: "d15bec4"
           # ports:
           #   - containerPort: 8888
           #     name: "http-server"

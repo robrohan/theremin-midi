@@ -1,8 +1,11 @@
+import os
 import sentencepiece as spm
+
+VERSION = os.environ["VERSION"]
 
 # Load the trained SentencePiece model
 sp = spm.SentencePieceProcessor()
-sp.load('models/miditok.model')
+sp.load(f'models/{VERSION}/miditok.model')
 
 # Tokenize a sample text
 # input_text = "This is a test sentence for SentencePiece."

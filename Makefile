@@ -2,6 +2,8 @@
 hash = $(shell git log --pretty=format:'%h' -n 1)
 -include .env
 
+VERSION:=fc102c83
+
 clean:
 	rm -rf ./training_checkpoints
 	rm -f ./output/*.mid
@@ -37,18 +39,17 @@ midi_clean:
 # Step two, turn the cleaned midi text into UTF-8 text 
 # that we can use to train the model
 midi_text:
-	VERSION=$(hash) \
+	VERSION=$(VERSION) \
 	python src/v2/prep.py
 
 # Step three, train sentencepiece so we have a vocabulary that we 
 # can use to train the GPT model
 midi_train_token:
-	VERSION=$(hash) \
+	VERSION=$(VERSION) \
 	python src/v2/tokenization_train.py
 
-
 train_sh:
-	VERSION=$(hash) \
+	VERSION=$(VERSION) \
 	MINIO_SERVER=$(MINIO_SERVER) \
 	MINIO_ACCESS=$(MINIO_ACCESS) \
 	MINIO_SECRET=$(MINIO_SECRET) \
@@ -65,7 +66,6 @@ train_sh:
 inference:
 	VERSION=$(hash) \
 	python src/v2/inference.py ./input/melody_75_F#.midi
-
 
 #######################################
 
@@ -87,6 +87,7 @@ docker_run:
 	docker ps; \
 	docker run \
 		-v $(PWD)/robbie-v1.0.0:/robbie-v1.0.0 \
+		-e "VERSION=d15bec4"
 		-e "MINIO_SERVER=$(MINIO_SERVER)" \
 		-e "MINIO_ACCESS=$(MINIO_ACCESS)" \
 		-e "MINIO_SECRET=$(MINIO_SECRET)" \

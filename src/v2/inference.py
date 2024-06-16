@@ -10,7 +10,7 @@ VERSION = os.environ["VERSION"]
 
 def generate(prompt='', num_samples=5, steps=64, do_sample=True):
     sp = spm.SentencePieceProcessor()
-    sp.load(f'models/miditok_{VERSION}.model')
+    sp.load(f'models/{VERSION}/miditok.model')
     if prompt == '':
         # x = torch.tensor([[tokenizer.encoder.encoder['<|endoftext|>']]],
         # dtype=torch.long)
@@ -44,7 +44,7 @@ model_config.model_type = 'gpt-nano'
 model_config.vocab_size = 50257
 model_config.block_size = 1024
 model = GPT(model_config)
-model.load_state_dict(torch.load(f"./models/music_gen_{VERSION}.pt",
+model.load_state_dict(torch.load(f"./models/{VERSION}/music_gen.pt",
                                  map_location=torch.device('cpu')))
 model.eval()
 #################################

@@ -17,7 +17,7 @@ def main():
     # to the training data
     seq_length = 256
 
-    with open(f'./models/training_{VERSION}.txt', 'w') as inf:
+    with open(f'./models/{VERSION}/training.txt', 'w') as inf:
         for i in range(len(filenames)):
             print(filenames[i])
             try:

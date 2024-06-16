@@ -7,8 +7,8 @@ MAX_VOCAB = 31185
 
 # Train a SentencePiece model
 spm.SentencePieceTrainer.train(
-    input=f'./models/training_{VERSION}.txt',
-    model_prefix=f'./models/miditok_{VERSION}',
+    input=f'./models/{VERSION}/training.txt',
+    model_prefix=f'./models/{VERSION}/miditok',
     vocab_size=MAX_VOCAB,
     input_format='text',
     input_sentence_size=3000,

@@ -10,9 +10,11 @@ client = Minio(os.environ['MINIO_SERVER'],
                cert_check=False,
                secure=False,)
 
+VERSION = os.environ['VERSION']
 bucket_name = "musicgen"
 
-for item in client.list_objects(bucket_name, "",
-                                recursive=True):
+objs = client.list_objects(bucket_name, prefix=f"{VERSION}/", recursive=True)
+#  print(objs)
+for item in objs:
     client.fget_object(bucket_name, item.object_name,
-                       f"models/{item.object_name}")
+                       f"./models/{item.object_name}")
