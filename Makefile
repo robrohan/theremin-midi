@@ -2,7 +2,7 @@
 hash = $(shell git log --pretty=format:'%h' -n 1)
 -include .env
 
-VERSION:=fc102c83
+VERSION:=d15bec4c
 
 clean:
 	rm -rf ./training_checkpoints
@@ -64,7 +64,7 @@ train_sh:
 # 	python src/v1/inference.py ./input/melody_75_F#.midi
 
 inference:
-	VERSION=$(hash) \
+	VERSION=$(VERSION) \
 	python src/v2/inference.py ./input/melody_75_F#.midi
 
 #######################################
