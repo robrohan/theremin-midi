@@ -29,6 +29,7 @@ Put all the midi files you want to train into the `data` directory.
 Then run the prep script:
 
 ```bash
+VERSION=$(VERSION) \
 python3 src/v2/prep.py
 ```
 
@@ -42,6 +43,7 @@ aka, turn the text into integers so we can do that sweet sweet matrix
 multiplication.
 
 ```bash
+VERSION=$(VERSION) \
 python3 src/v2/tokenization_train.py
 ```
 
@@ -59,6 +61,7 @@ to train the model.
 Finally you can call:
 
 ```bash
+VERSION=$(VERSION) \
 python3 src/v2/train.py
 ```
 
@@ -94,4 +97,3 @@ file.
 
 - The GPT implementation was copied and modified from [minGPT](https://github.com/karpathy/minGPT) - almost completely copied (see license)
 - While abandoned, v1 was from a [tesnsorflow example](https://www.tensorflow.org/tutorials/audio/music_generation)
-- 

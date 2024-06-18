@@ -18,7 +18,7 @@ install:
 
 play:
 	fluidsynth \
-		data/robbie-v1.0.0/pop/beatle_help.mid
+		./output/model_0.midi
 
 # Step one, remove drum tracks from midi files and make all
 # the instruments on to one track
@@ -32,13 +32,9 @@ midi_clean:
 		./data/robbie-v1.0.0/lmd_full \
 		./data/robbie-v1.0.0/clean 
 
-	python src/v2/clean.py \
-		./data/robbie-v1.0.0/game \
-		./data/robbie-v1.0.0/clean 
-
 # Step two, turn the cleaned midi text into UTF-8 text 
 # that we can use to train the model
-midi_text:
+midi_prep:
 	VERSION=$(VERSION) \
 	python src/v2/prep.py
 
