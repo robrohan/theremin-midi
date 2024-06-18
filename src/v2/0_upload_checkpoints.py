@@ -23,19 +23,6 @@ else:
     print("Bucket", bucket_name, "already exists")
 
 
-# for filename in os.listdir("./output"):
-# print(filename)
-filename = "music_gen.pt"
+filename = "theremin.pt"
 client.fput_object(bucket_name, f"{VERSION}/{filename}",
                    f"./{source_dir}/{filename}")
-
-# client.fput_object(
-#     bucket_name, "loss.png", "./output/loss.png"
-# )
-# client.fput_object(
-#     bucket_name, "model.json", "./output/model.json",
-# )
-
-# for filename in os.listdir(source_dir):
-#     print(filename)
-#     client.fput_object(bucket_name, filename, f"./{source_dir}/{filename}")

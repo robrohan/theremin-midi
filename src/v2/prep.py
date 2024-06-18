@@ -9,7 +9,7 @@ VERSION = os.environ["VERSION"]
 
 
 def main():
-    data_dir = pathlib.Path('./data/robbie-v1.0.0/clean')
+    data_dir = pathlib.Path('./data/')
     filenames = glob.glob(str(data_dir/'*.mid*'))
     print('Number of files:', len(filenames))
 

@@ -1,4 +1,5 @@
 import os
+import sys
 from model import GPT
 import sentencepiece as spm
 import torch
@@ -8,7 +9,7 @@ from midichar import str_to_encoded_notes, decode_midi, encode_midi, encoded_not
 VERSION = os.environ["VERSION"]
 
 
-def generate(prompt='', num_samples=5, steps=64, do_sample=True):
+def generate(model, prompt='', num_samples=5, steps=64, do_sample=True):
     sp = spm.SentencePieceProcessor()
     sp.load(f'models/{VERSION}/miditok.model')
     if prompt == '':
@@ -38,18 +39,25 @@ def generate(prompt='', num_samples=5, steps=64, do_sample=True):
         decode_midi(raw_notes, f"./output/model_{i}.midi")
 
 
-#################################
-model_config = GPT.get_default_config()
-model_config.model_type = 'gpt-nano'
-model_config.vocab_size = 50257
-model_config.block_size = 1024
-model = GPT(model_config)
-model.load_state_dict(torch.load(f"./models/{VERSION}/music_gen.pt",
-                                 map_location=torch.device('cpu')))
-model.eval()
-#################################
+def main():
+    file = sys.argv[1]
 
-input_text = encoded_notes_to_str(encode_midi("./input/prompt.mid", 0, 16))
-# input_text = "󀈤󀈤󈈰"
+    #################################
+    model_config = GPT.get_default_config()
+    model_config.model_type = 'gpt-nano'
+    model_config.vocab_size = 50257
+    model_config.block_size = 1024
+    model = GPT(model_config)
+    model.load_state_dict(torch.load(f"./models/{VERSION}/theremin.pt",
+                                     map_location=torch.device('cpu')))
+    model.eval()
+    #################################
 
-generate(input_text)
+    input_text = encoded_notes_to_str(encode_midi(file, 0, 16))
+    # input_text = "󀈤󀈤󈈰"
+
+    generate(model, input_text)
+
+
+if __name__ == "__main__":
+    main()

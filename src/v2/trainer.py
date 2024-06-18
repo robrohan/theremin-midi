@@ -1,6 +1,7 @@
 """
-Simple training loop; Boilerplate that could apply to any arbitrary neural network,
-so nothing in this file really has anything to do with GPT specifically.
+Simple training loop; Boilerplate that could apply to any arbitrary neural
+network, so nothing in this file really has anything to do with GPT
+specifically.
 """
 
 import time
@@ -107,7 +108,7 @@ class Trainer:
             self.iter_dt = tnow - self.iter_time
             self.iter_time = tnow
 
-            torch.save(model.state_dict(), "./models/music_gen.pt")
+            torch.save(model.state_dict(), "./models/theremin.pt")
 
             # termination conditions
             if config.max_iters is not None and self.iter_num >= config.max_iters:

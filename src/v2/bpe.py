@@ -5,29 +5,14 @@ from torch.utils.data import Dataset
 import sentencepiece as spm
 
 
-def collate_fn(batch):
-    """
-    Custom Collate Function (collate_fn):
-    Lengths: Calculate the length of each sequence in the batch.
-    Max Length: Determine the maximum length of sequences in the batch.
-    Padding: Create a tensor of zeros with the shape (batch_size, max_len)
-    and copy each sequence into this tensor, padding with zeros where
-    necessary.
-    """
-    # Get the lengths of each sequence in the batch
-    lengths = [len(x) for x in batch]
-    # Find the maximum length in the batch
-    max_len = max(lengths)
-
-    # Pad the sequences with zeros
-    padded_batch = torch.zeros((len(batch), max_len), dtype=torch.long)
-    for i, seq in enumerate(batch):
-        padded_batch[i, : len(seq)] = seq
-
-    return padded_batch
-
-
 class CharDataset(Dataset):
+    """
+    This is from the original GPT example, and since we are turning midi into
+    plain  32bit integers, this can work out of the box. The final example in 
+    this repo uses the text version because it can make for a smaller set of 
+    tokens since sentencepiece will use fragments of text instead of single 
+    "integer notes" - it does work though, take it for a spin
+    """
     def __init__(self, data, block_size):
         chars = sorted(list(set(data)))
         data_size, vocab_size = len(data), len(chars)
@@ -51,6 +36,9 @@ class CharDataset(Dataset):
 
 
 class TextDataset(Dataset):
+    """
+    Break text into tokens that we can encode and decode.
+    """
     def __init__(self, file_path, tokenizer_path, max_length=128):
         self.file_path = file_path
         self.data = self._load_data(file_path)

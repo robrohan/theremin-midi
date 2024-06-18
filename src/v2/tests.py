@@ -7,7 +7,7 @@ from midichar import (
     encoded_notes_to_str,
     str_to_encoded_notes,
 )
-from bpe import CharDataset, TextDataset, collate_fn
+from bpe import CharDataset, TextDataset
 
 
 def configure_logger():
@@ -20,13 +20,7 @@ def configure_logger():
 
 
 def test_file():
-    # test_file = './input/chords_75_Bb.midi'
-    # test_file = './input/melody_75_F#.midi'
     test_file = "./input/notes.mid"
-    # test_file = './input/prompt.mid'
-    # test_file = "./output/output.mid"
-    # test_file = "./input/test_long.midi"
-    # test_file = "./robbie-v1.0.0/clean/clean/0a5eefdc024a8076b0764636da85ae6f37b14cd8.midi"
 
     seq_length = 64
 

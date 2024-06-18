@@ -8,7 +8,6 @@ RUN apt-get update \
 
 COPY ./src ./src
 COPY ./output ./output
-# COPY ./input ./input
 COPY requirements.txt ./
 COPY train.sh ./train.sh
 

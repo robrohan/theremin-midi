@@ -1,5 +1,5 @@
 """
-This pulls training data from minio to local
+This pulls training data from minio to local (within the docker container)
 """
 import os
 from minio import Minio

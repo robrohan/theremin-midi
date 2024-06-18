@@ -2,7 +2,7 @@
 hash = $(shell git log --pretty=format:'%h' -n 1)
 -include .env
 
-VERSION:=d15bec4c
+VERSION:=$(hash)
 
 clean:
 	rm -rf ./training_checkpoints
@@ -57,12 +57,6 @@ train_sh:
 
 #######################################
 
-# train_v1:
-# 	python src/v1/train.py
-
-# inference_v1:
-# 	python src/v1/inference.py ./input/melody_75_F#.midi
-
 inference:
 	VERSION=$(VERSION) \
 	python src/v2/inference.py ./input/melody_75_F#.midi
@@ -86,8 +80,8 @@ docker_build:
 docker_run:
 	docker ps; \
 	docker run \
-		-v $(PWD)/robbie-v1.0.0:/robbie-v1.0.0 \
-		-e "VERSION=d15bec4"
+		-v $(PWD)/data:/data \
+		-e "VERSION=$(VERSION)"
 		-e "MINIO_SERVER=$(MINIO_SERVER)" \
 		-e "MINIO_ACCESS=$(MINIO_ACCESS)" \
 		-e "MINIO_SECRET=$(MINIO_SECRET)" \

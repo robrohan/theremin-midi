@@ -44,13 +44,10 @@ def clean_with_pretty(out_path, file):
     instruments_index = [
         i for i, inst in enumerate(midi.instruments) if inst.is_drum
     ]
-    # instruments_index = [i for i, inst in enumerate(midi.instruments) if new_inst]
 
     # remove all non drums, from the sorted such that no conflicting indexes
     for i in sorted(instruments_index, reverse=True):
         del midi.instruments[i]
-
-    # logging.debug(len(midi.instruments))
 
     # combine all tracks into one
     for instrument in midi.instruments:
@@ -62,8 +59,6 @@ def clean_with_pretty(out_path, file):
     instruments_index = [i for i, _ in enumerate(midi.instruments)]
     for i in sorted(instruments_index, reverse=True):
         del midi.instruments[i]
-
-    # logging.debug(len(midi.instruments))
 
     # and add back our consolidated track
     midi.instruments.append(new_inst)

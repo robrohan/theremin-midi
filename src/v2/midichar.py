@@ -137,8 +137,8 @@ def decode_midi(
             end=end,
         )
         instrument.notes.append(note)
-        #prev_start += (60000 / (bpm * 192)) / 4
-        prev_start = start
+        prev_start += (60000 / (bpm * 192)) / 4
+        # prev_start = start
 
     pm.instruments.append(instrument)
     pm.write(out_file)
