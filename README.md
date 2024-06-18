@@ -1,7 +1,7 @@
 # Theremin-midi - GPT Midi Music Generator
 
 This is a little toy midi->GPT->midi generator. It's purpose is to help 
-musicians (well... me) come up with musical ideas - it does not autogenerate 
+musicians (well... me) come up with musical ideas - it does not auto generate 
 full songs like [udio.com](https://udio.com) or [suno.com](https://suno.com) 
 
 It can be used like the "dice game" I am sure most musicians have played 
@@ -16,7 +16,7 @@ You should operate in a separate python environment:
 
 There are some [pretrained models available](https://huggingface.co/robro/theremin-midi/tree/main), 
 but hopefully you just want to train this from your own midi files. 
-The follow is how you do that:
+The following is how you do that:
 
 ## Data Prep
 
