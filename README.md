@@ -4,6 +4,8 @@ This is a little toy midi->GPT->midi generator. It's purpose is to help
 musicians (well... me) come up with musical ideas - it does not auto generate 
 full songs like [udio.com](https://udio.com) or [suno.com](https://suno.com) 
 
+[Example Output](https://cdn.robrohan.com/theremin_example.mp4)
+
 It can be used like the "dice game" I am sure most musicians have played 
 (where you roll a set of dice to create a chord progression or melody).
 
