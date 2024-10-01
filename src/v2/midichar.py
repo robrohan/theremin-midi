@@ -141,7 +141,8 @@ def decode_midi(
         # prev_start = start
 
     pm.instruments.append(instrument)
-    pm.write(out_file)
+    if out_file is not None:
+        pm.write(out_file)
     return pm
 
 

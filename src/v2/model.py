@@ -14,7 +14,7 @@ import torch
 import torch.nn as nn
 from torch.nn import functional as F
 
-from utils import CfgNode as CN
+from v2.utils import CfgNode as CN
 
 # -----------------------------------------------------------------------------
 
