@@ -86,3 +86,8 @@ docker_run:
 docker_push:
 	docker ps; \
 	docker push robrohan/songomatic_train
+
+#######################################
+
+server:
+	PORT=3000 python ./src/main.py

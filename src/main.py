@@ -84,7 +84,6 @@ class MyHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
         output = io.BytesIO()
         midi.write(output)
         midi_data = output.getvalue()
-        # print(midi_data)
         self.wfile.write(midi_data)
 
 
