@@ -69,23 +69,44 @@ store:
 
 #######################################
 
+test_call:
+	./call.sh http://localhost:3000/ "@./input/prompt.mid" test.mid
+
+#######################################
+
 docker_build:
 	docker ps; \
 	docker build . -t robrohan/songomatic_train
+
+docker_build_inference:
+	docker ps; \
+	docker build -f Dockerfile.inference \
+		-t robrohan/theremin_inference .
 
 docker_run:
 	docker ps; \
 	docker run \
 		-v $(PWD)/data:/data \
-		-e "VERSION=$(VERSION)"
+		-e "VERSION=$(VERSION)" \
 		-e "MINIO_SERVER=$(MINIO_SERVER)" \
 		-e "MINIO_ACCESS=$(MINIO_ACCESS)" \
 		-e "MINIO_SECRET=$(MINIO_SECRET)" \
 		robrohan/songomatic_train
 
+docker_run_inference:
+	docker ps; \
+	docker run \
+		-e "PORT=3000" \
+		-d -p 3000:3000 \
+		robrohan/theremin_inference
+
 docker_push:
 	docker ps; \
 	docker push robrohan/songomatic_train
+
+docker_push_inference:
+	docker ps; \
+	docker push robrohan/theremin_inference
 
 #######################################
 

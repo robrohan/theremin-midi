@@ -62,7 +62,7 @@ def generate(model, prompt='', num_samples=5, steps=64, do_sample=True):
     return decode_midi(raw_notes, None)
 
 
-class MyHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
+class MusicRequestHandler(http.server.BaseHTTPRequestHandler):
     def do_GET(self):
         self.send_response(200)
         self.send_header("Content-type", "text/html")
@@ -87,7 +87,7 @@ class MyHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
         self.wfile.write(midi_data)
 
 
-Handler = MyHTTPRequestHandler
+Handler = MusicRequestHandler
 with socketserver.TCPServer(("", PORT), Handler) as httpd:
-    print("Server running at port", PORT)
+    print("server running at port", PORT)
     httpd.serve_forever()
