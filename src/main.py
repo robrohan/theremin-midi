@@ -15,7 +15,7 @@ from v2.midichar import (
 )
 
 
-PORT = int(os.getenv("PORT"))
+PORT = int(os.getenv("PORT", "3000"))
 
 #################################
 model_config = GPT.get_default_config()

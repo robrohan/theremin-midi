@@ -11,9 +11,9 @@ It can be used like the "dice game" I am sure most musicians have played
 
 You should operate in a separate python environment:
 
-- `conda create -n theremin python==3.8`
+- `conda create -n theremin python==3.11`
 - `conda activate theremin`
-- `apt install fluidsynth`
+- `sudo apt install fluidsynth`
 - `make install`
 
 There are some [pretrained models available](https://huggingface.co/robro/theremin-midi/tree/main), 

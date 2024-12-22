@@ -53,12 +53,6 @@ train_sh:
 
 #######################################
 
-inference:
-	VERSION=$(VERSION) \
-	python src/v2/inference.py ./input/melody_75_F#.midi
-
-#######################################
-
 test_encode_midi:
 	python src/v2/tests.py
 
@@ -66,11 +60,6 @@ test_encode_midi:
 
 store:
 	aws s3 sync --delete ./data/robbie-v1.0.0/ s3://midis.robrohan.com
-
-#######################################
-
-test_call:
-	./call.sh http://localhost:3000/ "@./input/prompt.mid" test.mid
 
 #######################################
 
@@ -112,3 +101,12 @@ docker_push_inference:
 
 server:
 	PORT=3000 python ./src/main.py
+
+test_call:
+	./call.sh http://localhost:3000/ "@./input/prompt.mid" ./output/test.mid
+
+test_call2:
+	./call.sh http://localhost:3000/ "@./input/chords_75_Bb.midi" ./output/test.mid
+
+
+#######################################
